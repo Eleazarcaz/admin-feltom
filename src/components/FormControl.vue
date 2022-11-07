@@ -44,6 +44,8 @@ const props = defineProps({
   borderless: Boolean,
   transparent: Boolean,
   ctrlKFocus: Boolean,
+  minlength: Number,
+  maxlength: Number,
 });
 
 const emit = defineEmits(["update:modelValue", "setRef"]);
@@ -159,6 +161,9 @@ if (props.ctrlKFocus) {
       :placeholder="placeholder"
       :type="computedType"
       :class="inputElClass"
+      :size="size"
+      :maxlength="parseInt(maxlength)"
+      :minlength="parseInt(minlength)"
     />
     <FormControlIcon v-if="icon" :icon="icon" :h="controlIconH" />
   </div>

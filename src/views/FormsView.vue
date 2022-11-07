@@ -16,14 +16,14 @@ import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.
 import NotificationBarInCard from "@/components/NotificationBarInCard.vue";
 
 const selectOptions = [
-  { id: 1, label: "Business development" },
-  { id: 2, label: "Marketing" },
-  { id: 3, label: "Sales" },
+  { id: 1, label: "Normal" },
+  { id: 2, label: "Taller" },
+  { id: 3, label: "Empresa" },
 ];
 
 const form = reactive({
-  name: "John Doe",
-  email: "john.doe@example.com",
+  name: "",
+  email: "",
   phone: "",
   department: selectOptions[0],
   subject: "",
@@ -59,7 +59,7 @@ const formStatusSubmit = () => {
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiBallotOutline"
-        title="Forms example"
+        title="Datos del Cliente"
         main
       >
         <BaseButton
@@ -72,31 +72,41 @@ const formStatusSubmit = () => {
           small
         />
       </SectionTitleLineWithButton>
-      <CardBox form @submit.prevent="submit">
-        <FormField label="Grouped with icons">
-          <FormControl v-model="form.name" :icon="mdiAccount" />
-          <FormControl v-model="form.email" type="email" :icon="mdiMail" />
-        </FormField>
-
-        <FormField label="With help line" help="Do not enter the leading zero">
+      <CardBox is-form @submit.prevent="submit">
+        <FormField label="Nombre y correo">
           <FormControl
-            v-model="form.phone"
-            type="tel"
-            placeholder="Your phone number"
+            v-model="form.name"
+            :icon="mdiAccount"
+            placeholder="Nombre completo"
+            required
+          />
+          <FormControl
+            v-model="form.email"
+            type="email"
+            :icon="mdiMail"
+            placeholder="correo@example.com"
           />
         </FormField>
 
-        <FormField label="Dropdown">
+        <FormField label="Telefono" help="Ingresa los 10 digitos.">
+          <FormControl
+            v-model="form.phone"
+            type="tel"
+            placeholder="Tu número de telefono"
+            maxlength="10"
+            minlength="10"
+            required
+          />
+        </FormField>
+
+        <FormField label="Tipo de Cliente">
           <FormControl v-model="form.department" :options="selectOptions" />
         </FormField>
 
         <BaseDivider />
 
-        <FormField label="Question" help="Your question. Max 255 characters">
-          <FormControl
-            type="textarea"
-            placeholder="Explain how we can help you"
-          />
+        <FormField label="Observaciones" help="Maximo 255 characters">
+          <FormControl type="textarea" placeholder="El clientes es..." />
         </FormField>
 
         <template #footer>
