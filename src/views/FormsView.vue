@@ -1,6 +1,14 @@
 <script setup>
 import { reactive, ref } from "vue";
-import { mdiBallotOutline, mdiAccount, mdiMail, mdiGithub } from "@mdi/js";
+import {
+  mdiBallotOutline,
+  mdiAccount,
+  mdiMail,
+  mdiGithub,
+  mdiCar,
+  mdiCarInfo,
+  mdiCarSearch,
+} from "@mdi/js";
 import SectionMain from "@/components/SectionMain.vue";
 import CardBox from "@/components/CardBox.vue";
 import FormCheckRadioGroup from "@/components/FormCheckRadioGroup.vue";
@@ -14,6 +22,7 @@ import SectionTitle from "@/components/SectionTitle.vue";
 import LayoutAuthenticated from "@/layouts/LayoutAuthenticated.vue";
 import SectionTitleLineWithButton from "@/components/SectionTitleLineWithButton.vue";
 import NotificationBarInCard from "@/components/NotificationBarInCard.vue";
+import Dropzone from "@/components/Dropzone.vue";
 
 const selectOptions = [
   { id: 1, label: "Normal" },
@@ -51,6 +60,10 @@ const formStatusSubmit = () => {
   formStatusCurrent.value = formStatusOptions[formStatusCurrent.value + 1]
     ? formStatusCurrent.value + 1
     : 0;
+};
+
+const showImages = (e) => {
+  console.log(customElementsForm.file);
 };
 </script>
 
@@ -103,11 +116,54 @@ const formStatusSubmit = () => {
           <FormControl v-model="form.department" :options="selectOptions" />
         </FormField>
 
-        <BaseDivider />
-
         <FormField label="Observaciones" help="Maximo 255 characters">
           <FormControl type="textarea" placeholder="El clientes es..." />
         </FormField>
+
+        <BaseDivider />
+
+        <FormField label="Marca y modelo del vehiculo">
+          <FormControl
+            v-model="form.carName"
+            :icon="mdiCar"
+            placeholder="Ejemplo: Ford Mustang 2012 Azul"
+            required
+          />
+        </FormField>
+
+        <FormField
+          label="Numero de Serie (VIN)"
+          help="Ingresa los 17 digitos VIN"
+        >
+          <FormControl
+            v-model="form.carVIN"
+            :icon="mdiCarInfo"
+            minlength="17"
+            maxlength="17"
+            placeholder="Ejemplo: 1FAHP3F29CL409616"
+            required
+          />
+        </FormField>
+        <FormField label="Placas">
+          <FormControl
+            v-model="form.carPlacas"
+            :icon="mdiCarSearch"
+            placeholder="XXX-XX-XXX"
+            required
+          />
+        </FormField>
+
+        <FormField label="Observaciones" help="Maximo 255 characters">
+          <FormControl type="textarea" placeholder="La falla que tiene..." />
+        </FormField>
+        <FormFilePicker
+          v-model="customElementsForm.file"
+          multiple
+          label="Subir Fotos"
+          @upload-images="showImages"
+        />
+
+        <Dropzone />
 
         <template #footer>
           <BaseButtons>
@@ -154,7 +210,11 @@ const formStatusSubmit = () => {
 
         <BaseDivider />
 
-        <FormFilePicker v-model="customElementsForm.file" label="Upload" />
+        <FormFilePicker
+          v-model="customElementsForm.file"
+          label="Subir Fotos"
+          images="true"
+        />
       </CardBox>
 
       <SectionTitle>Form with status example</SectionTitle>
